@@ -201,6 +201,7 @@ cc.Class({
                     cc.fadeOut(dua),
                     cc.callFunc(() => {
                         randomNode.active = false;
+                        this.removeRandomNode(randomNode);
                     })
                 );
                 randomNode.runAction(seq);
@@ -212,6 +213,22 @@ cc.Class({
                 //禁用消除 按钮
                 this.destroyNode.enabled = false;
                 this.destroyNode.opacity = 128;
+            }
+        }
+    },
+
+    removeRandomNode(hitNode) {
+        let x = parseInt(hitNode.x / 90);
+        let y = parseInt(hitNode.y / -90);
+        if (hitNode.name == 'h2' || hitNode.name == 'h3') {
+            let selfCount = parseInt(hitNode.height / 90);
+            for (let i = 0; i < selfCount; i++) {
+                this.cellNode2dMapArr[y][x + i] = 'o';
+            }
+        } else {
+            let selfCount = parseInt(hitNode.width / 90);
+            for (let i = 0; i < selfCount; i++) {
+                this.cellNode2dMapArr[y + i][x] = 'o';
             }
         }
     },
@@ -344,7 +361,6 @@ cc.Class({
                 this.cellNode2dMapArr[i][j] = "o";
             }
         }
-        console.log(this.cellNode2dMapArr);
 
         var addid = 0;
         for (var k = 0; k < 50; k++) { //块表现
@@ -406,7 +422,6 @@ cc.Class({
                 }
             }
         }
-        console.log(this.cellNode2dMapArr);
     },
 
     resetMap() {

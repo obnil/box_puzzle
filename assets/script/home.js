@@ -131,18 +131,12 @@ cc.Class({
                 if (count == 2) {
                     let cellNode = cc.instantiate(this.cell_h2_Prefeb);
                     cellNode.setPosition(cc.v2(i % maxHCnt * this.cellHSize, parseInt(i / maxHCnt) * this.cellVSize * -1));
-                    if (this.demo) {
-                        cellNode.getComponent('h2').disableTouch();
-                    }
                     this.cellAreaNode.addChild(cellNode);
                     this.cellNodeArr.push(cellNode);
                 }
                 if (count == 3) {
                     let cellNode = cc.instantiate(this.cell_h3_Prefeb);
                     cellNode.setPosition(cc.v2(i % maxHCnt * this.cellHSize, parseInt(i / maxHCnt) * this.cellVSize * -1));
-                    if (this.demo) {
-                        cellNode.getComponent('h3').disableTouch();
-                    }
                     this.cellAreaNode.addChild(cellNode);
                     this.cellNodeArr.push(cellNode);
                 }
@@ -162,18 +156,12 @@ cc.Class({
                 if (count == 2) {
                     let cellNode = cc.instantiate(this.cell_v2_Prefeb);
                     cellNode.setPosition(cc.v2(i % maxHCnt * this.cellHSize, parseInt(i / maxHCnt) * this.cellVSize * -1));
-                    if (this.demo) {
-                        cellNode.getComponent('v2').disableTouch();
-                    }
                     this.cellAreaNode.addChild(cellNode);
                     this.cellNodeArr.push(cellNode);
                 }
                 if (count == 3) {
                     let cellNode = cc.instantiate(this.cell_v3_Prefeb);
                     cellNode.setPosition(cc.v2(i % maxHCnt * this.cellHSize, parseInt(i / maxHCnt) * this.cellVSize * -1));
-                    if (this.demo) {
-                        cellNode.getComponent('v3').disableTouch();
-                    }
                     this.cellAreaNode.addChild(cellNode);
                     this.cellNodeArr.push(cellNode);
                 }
@@ -188,9 +176,6 @@ cc.Class({
                 if (count == 2) {
                     let cellNode = cc.instantiate(this.cell_k_Prefeb);
                     cellNode.setPosition(cc.v2(i % maxHCnt * this.cellHSize, parseInt(i / maxHCnt) * this.cellVSize * -1));
-                    if (this.demo) {
-                        cellNode.getComponent('k').disableTouch();
-                    }
                     this.cellAreaNode.addChild(cellNode);
                     this.cellNodeArr.push(cellNode);
                 }
@@ -198,7 +183,7 @@ cc.Class({
         }
         setTimeout(() => {
             this.solution();
-        }, 2000);
+        }, 5000);
     },
 
     solution() {
@@ -281,11 +266,11 @@ cc.Class({
     },
 
     onLoad() {
-        this.demo = true;
         this.cellNodeArr = [];
         this.initBg();
         this.resetMap();
         cc.director.preloadScene('game');
+        this.cellAreaNode.getComponent('cellArea').disableTouch();
 
         if (cc.sys.platform == cc.sys.WECHAT_GAME) {
             this.rankNode.active = true;
@@ -306,19 +291,6 @@ cc.Class({
                     }
                 }
             })
-        }
-
-        this.logoNode.x = 270;
-        this.move(this.logoNode, -270, 0);
-
-        this.cellAreaNode.x = 100;
-        this.move(this.cellAreaNode, -370, 0);
-
-        this.playNode.x = 470;
-        this.move(this.playNode, -470, 0);
-        if (cc.sys.platform == cc.sys.WECHAT_GAME) {
-            this.rankNode.x = 470;
-            this.move(this.rankNode, -470, 0);
         }
     },
 
