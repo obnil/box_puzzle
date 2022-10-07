@@ -9,12 +9,18 @@ cc.Class({
         cell_h3_Prefeb: cc.Prefab,
         cellAreaNode: cc.Node,
         logoNode: cc.Node,
+        helpTipNode: cc.Node,
+        helpTipLabel: cc.Label,
         playNode: cc.Node,
         rankNode: cc.Node,
 
         rankAreaNode: cc.Node,
         mainAreaNode: cc.Node,
         backNode: cc.Node,
+        btnAudio: {
+            default: null,
+            url: cc.AudioClip
+        }
     },
 
     clickToRank() {
@@ -27,22 +33,26 @@ cc.Class({
         this.showRank();
     },
 
-    playMusic() {
-        this.current = cc.audioEngine.play(this.audio, false);
+    btnClick() {
+        cc.audioEngine.playEffect(this.btnAudio);
     },
 
     showRank() {
-        this.rankAreaNode.x = 0;
+        this.rankAreaNode.active = true;
         this.mainAreaNode.active = false;
     },
 
     showMain() {
-        this.rankAreaNode.x = 1080;
+        this.rankAreaNode.active = false;
         this.mainAreaNode.active = true;
     },
 
     clickToPlay() {
         cc.director.loadScene('game');
+    },
+
+    clickToSolution() {
+        cc.director.loadScene('solution');
     },
 
     getRandomMap() {
@@ -183,7 +193,7 @@ cc.Class({
         }
         setTimeout(() => {
             this.solution();
-        }, 5000);
+        }, 2000);
     },
 
     solution() {
@@ -266,15 +276,14 @@ cc.Class({
     },
 
     onLoad() {
+        window.home = this;
         this.cellNodeArr = [];
         this.initBg();
         this.resetMap();
         cc.director.preloadScene('game');
         this.cellAreaNode.getComponent('cellArea').disableTouch();
-
+        this.mapId = 1057;
         if (cc.sys.platform == cc.sys.WECHAT_GAME) {
-            this.rankNode.active = true;
-            this.rankAreaNode.active = true;
             wx.showShareMenu({
                 withShareTicket: true,
                 menus: ['shareAppMessage', 'shareTimeline']
@@ -291,6 +300,12 @@ cc.Class({
                     }
                 }
             })
+            let object = wx.getLaunchOptionsSync();
+            this.mapId = parseInt(object.query['mapId']);
+            if(this.mapId){
+                this.helpTipNode.active = true;
+                this.helpTipLabel.string += ' > '+this.mapId;
+            }
         }
     },
 
@@ -298,20 +313,4 @@ cc.Class({
         let blink = new cc.Blink(100, 100)
         this.playNode.runAction(blink);
     },
-
-    move(node, x, y) {
-        //添加动画
-        let dua = 1;
-        let seq = cc.sequence(
-            cc.moveTo(dua, node.x + x, node.y + y),
-            cc.callFunc(() => {
-                setTimeout(() => {
-
-                }, 1000);
-            })
-        );
-
-        node.runAction(seq);
-    },
-
 });

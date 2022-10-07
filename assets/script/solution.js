@@ -8,23 +8,10 @@ cc.Class({
         cell_h2_Prefeb: cc.Prefab,
         cell_h3_Prefeb: cc.Prefab,
         cellAreaNode: cc.Node,
-        level1Node: cc.Node,
-        level2Node: cc.Node,
-        clockLabel: cc.Label,
-        costLabel: cc.Label,
+        mapIdLabel: cc.Label,
 
         gamingNode: cc.Node,
-        failNode: cc.Node,
-        successNode: cc.Node,
-        audio: cc.AudioClip,
-        hardNode: cc.Node,
-        rankAreaNode: cc.Node,
         resetNode: cc.Node,
-        resetCountLabel: cc.Label,
-        changeNode: cc.Node,
-        changeCountLabel: cc.Label,
-        destroyNode: cc.Node,
-        destroyCountLabel: cc.Label,
         btnAudio: {
             default: null,
             url: cc.AudioClip
@@ -35,66 +22,22 @@ cc.Class({
         cc.audioEngine.playEffect(this.btnAudio);
     },
 
-    share() {
-        this.btnClick();
-        setTimeout(() => {
-            if (cc.sys.platform == cc.sys.WECHAT_GAME) {
-                wx.shareAppMessage({
-                    title: '和我一起来挑战' + this.mapIndex + '关吧~',
-                    imageUrl: 'https://636c-cloud1-0gx5292p6d4e5ef3-1309513586.tcb.qcloud.la/share.png?sign=aeed8af1c1fcc58e9560ac588b45a753&t=1664193194',
-                    query: "mapId=" + this.mapIndex,
-                })
-            }
-        }, 500);
-    },
-    // testMap(round, level) {
-    //     let xhr = new XMLHttpRequest();
-    //     xhr.onreadystatechange = () => {
-    //         if (xhr.readyState == 4 && xhr.status >= 200 && xhr.status < 400) {
-    //             let response = xhr.responseText;
-    //             console.log('linbo:', `'${JSON.parse(response).a0}',`);
-    //         }
-    //     }
-
-    //     xhr.open('GET', `http://bbh.gaoqingpai.com/hrd/res/HD/Round${round}/${level}.json`);
-    //     xhr.send();
-    // },
-
     getRandomMap1() {
         let maps;
         if (this.mapRandomIndex == 1) {
             maps = this.maps1;
         } else if (this.mapRandomIndex == 2) {
             maps = this.maps2;
-        } else {
+        } else if(this.mapRandomIndex == 3){
             maps = this.maps3;
-        }
-        if (this.map1Index == -1) {
-            this.map1Index = parseInt(Math.random() * maps.length);
-            console.log('当前关卡1:', this.mapRandomIndex, this.map1Index);
-            this.mapIndex = this.mapRandomIndex * 1000 + this.map1Index;
-        }
-
-        return maps[this.map1Index];
-    },
-
-    getRandomMap2() {
-        let maps;
-        if (this.mapRandomIndex == 1) {
-            maps = this.maps5;
-        } else if (this.mapRandomIndex == 2) {
+        }else if(this.mapRandomIndex == 4){
             maps = this.maps4;
-        } else {
-            maps = this.maps3;
+        }else {
+            maps = this.maps5;
         }
-        if (this.map2Index == -1) {
-            this.map2Index = parseInt(Math.random() * maps.length);
-            console.log('当前关卡2:', 6 - this.mapRandomIndex, this.map2Index);
-            this.mapIndex = this.mapRandomIndex * 1000 + this.map1Index;
-        }
-        return maps[this.map2Index];
-    },
 
+        return maps[this.mapIndex];
+    },
     initBg() {
         let ctx = this.cellAreaNode.getComponent(cc.Graphics);
 
@@ -130,218 +73,11 @@ cc.Class({
     },
 
     changeLevel2() {
-        if (this.firstLevel) {
-            this.firstLevel = false;
-            this.cellAreaNode.active = false;
-            this.hardNode.active = true;
-            let blink = new cc.Blink(100, 100)
-            this.hardNode.runAction(blink);
-            clearInterval(this.timeIndex);
-            setTimeout(() => {
-                this.hardNode.active = false;
-                this.cellAreaNode.active = true;
-                this.resetMap();
-                this.timeIndex = setInterval(() => {
-                    if (!this.showAlert) {
-                        this.clockLabel.string = --this.time;
-                        this.cost++;
-                        this.current = cc.audioEngine.play(this.audio, false);
-                        if (this.time == 0) {
-                            this.fail();
-                        }
-                    }
-                }, 1000);
-            }, 3000);
-        } else {
-            this.success();
-        }
+        this.success();
     },
 
     success() {
-        clearInterval(this.timeIndex);
-        cc.audioEngine.stop(this.current);
-        this.gamingNode.active = false;
-        this.successNode.active = true;
-        this.costLabel.string = this.cost;
-        this.rankAreaNode.active = true;
-        if (cc.sys.platform == cc.sys.WECHAT_GAME) {
-            wx.getOpenDataContext().postMessage({
-                type: 'updateCost',
-                value: this.cost,
-            })
-            wx.getOpenDataContext().postMessage({
-                type: 'switchRoute',
-                value: 0,
-            })
-        }
-    },
-
-    //消除
-    destroyRandomBlock() {
-        this.btnClick();
-        if (this.destroyTimes == -1) {
-            this.showAlert = true;
-            let self = this;
-            Alert.show("移出道具", "随机移出一个方块", function () {
-                self.btnClick();
-                self.showAlert = false;
-                //todo播放广告
-                self.destroyTimes = 1;
-                self.destroyCountLabel.string = self.destroyTimes;
-            }, function () {
-                self.btnClick();
-                self.showAlert = false;
-            }, null, 0.1);
-        } else {
-            if (this.destroyTimes > 0) {
-                //随机移出一个方块
-                let randomIndex = parseInt(Math.random() * this.cellNodeArr.length);
-                let randomNode = this.cellNodeArr[randomIndex];
-
-                let dua = 0.6;
-                let seq = cc.sequence(
-                    cc.fadeOut(dua),
-                    cc.callFunc(() => {
-                        randomNode.active = false;
-                        this.removeRandomNode(randomNode);
-                    })
-                );
-                randomNode.runAction(seq);
-
-                this.destroyTimes--;
-            }
-            if (this.destroyTimes == 0) {
-                //禁用消除 按钮
-                this.destroyNode.enabled = false;
-                this.destroyNode.opacity = 128;
-                this.destroyCountLabel.string = '+';
-            }
-        }
-    },
-
-    removeRandomNode(hitNode) {
-        let x = parseInt(hitNode.x / 90);
-        let y = parseInt(hitNode.y / -90);
-        if (hitNode.name == 'h2' || hitNode.name == 'h3') {
-            let selfCount = parseInt(hitNode.height / 90);
-            for (let i = 0; i < selfCount; i++) {
-                this.cellNode2dMapArr[y][x + i] = 'o';
-            }
-        } else {
-            let selfCount = parseInt(hitNode.width / 90);
-            for (let i = 0; i < selfCount; i++) {
-                this.cellNode2dMapArr[y + i][x] = 'o';
-            }
-        }
-    },
-
-    //继续挑战
-    replay() {
-        this.btnClick();
-        cc.director.loadScene('game');
-    },
-
-    //重新挑战
-    retry() {
-        this.btnClick();
-        this.firstLevel = true;
-        this.destroyNode.enabled = true;
-        this.destroyNode.opacity = 255;
-        this.destroyCountLabel.string = '+';
-        this.resetTimes = -1;
-        this.resetNode.enabled = true;
-        this.resetNode.opacity = 255;
-        this.resetCountLabel.string = '+';
-        this.changeTimes = -1;
-        this.changeNode.enabled = true;
-        this.changeNode.opacity = 255;
-        this.changeCountLabel.string = '+';
-
-        this.rankAreaNode.active = false;
-        this.gamingNode.active = true;
-        this.failNode.active = false;
-        this.resetMap();
-        this.timeIndex = setInterval(() => {
-            if (!this.showAlert) {
-                this.clockLabel.string = --this.time;
-                this.cost++;
-                this.current = cc.audioEngine.play(this.audio, false);
-                if (this.time == 0) {
-                    this.fail();
-                }
-            }
-        }, 1000);
-    },
-
-    //换一关
-    change() {
-        this.btnClick();
-        if (this.changeTimes == -1) {
-            this.showAlert = true;
-            let self = this;
-            Alert.show("洗牌道具", "随机打乱所有方块", function () {
-                self.btnClick();
-                //todo播放广告
-                self.showAlert = false;
-                self.changeTimes = 1;
-                self.changeCountLabel.string = self.changeTimes;
-            }, function () {
-                self.btnClick();
-                self.showAlert = false;
-            }, null, 0.1);
-        } else {
-            if (this.changeTimes > 0) {
-                this.changeTimes--;
-                this.map1Index = -1;
-                this.map2Index = -1;
-                this.resetMap();
-            }
-            if (this.changeTimes == 0) {
-                //禁用消除 按钮
-                this.changeNode.enabled = false;
-                this.changeNode.opacity = 128;
-                this.changeCountLabel.string = '+';
-            }
-        }
-    },
-
-    //重置
-    reset() {
-        this.btnClick();
-        if (this.resetTimes == -1) {
-            this.showAlert = true;
-            let self = this;
-            Alert.show("重置道具", "重置所有方块并把他们放回原位置", function () {
-                self.showAlert = false;
-                self.resetTimes = 1;
-                self.resetCountLabel.string = self.resetTimes;
-            }, function () {
-                self.btnClick();
-                self.showAlert = false;
-            }, null, 0.1);
-        } else {
-            this.resetTimes = 0;
-            this.resetMap();
-            this.resetCountLabel.string = '+';
-            //禁用重置 按钮
-            this.resetNode.enabled = false;
-            this.resetNode.opacity = 128;
-
-        }
-    },
-
-    fail() {
-        clearInterval(this.timeIndex);
-        cc.audioEngine.stop(this.current);
-        this.gamingNode.active = false;
-        this.failNode.active = true;
-        this.rankAreaNode.active = true;
-        if (cc.sys.platform == cc.sys.WECHAT_GAME) {
-            wx.getOpenDataContext().postMessage({
-                type: 'switchRoute',
-                value: 0,
-            })
-        }
+        this.cellAreaNode.getComponent('cellArea').disableTouch();
     },
     //开始解析map成对于的方块
     parseMapToBlock(map) {
@@ -430,26 +166,10 @@ cc.Class({
     },
 
     resetMap() {
-        let map;
-        if (this.firstLevel) {
-            this.level1Node.opacity = 255;
-            this.level2Node.opacity = 128;
-            map = this.getRandomMap1();
-        } else {
-            this.level1Node.opacity = 128;
-            this.level2Node.opacity = 255;
-            map = this.getRandomMap2();
-        }
-
-        this.time = 60;
-        this.cost = 0;
+        let map = this.getRandomMap1();
         this.cellHSize = 90;
         this.cellVSize = 90;
         this.parseMapToBlock(map);
-        if (!this.firstLevel) {
-            this.cellAreaNode.x = 270;
-            this.move(this.cellAreaNode, -540, 0);
-        }
     },
 
     back() {
@@ -457,46 +177,15 @@ cc.Class({
         cc.director.loadScene('home');
     },
 
-    move(node, x, y) {
-        //添加动画
-        let dua = 1;
-        let seq = cc.sequence(
-            cc.moveTo(dua, node.x + x, node.y + y),
-            cc.callFunc(() => {
-                setTimeout(() => {
-
-                }, 1000);
-            })
-        );
-
-        node.runAction(seq);
-    },
-
     onLoad() {
         window.game = this;
-        this.showAlert = false;
-        this.firstLevel = true;
-        this.map1Index = -1;
-        this.map2Index = -1;
-        this.destroyTimes = -1;
-        this.resetTimes = -1;
-        this.changeTimes = -1;
-        this.mapRandomIndex = parseInt(Math.random() * 3 + 1);//取[1,4)之间的数据1，2，3
-        this.time = 60;
+        this.mapIdLabel.string = window.home.mapId;
+        this.mapRandomIndex = parseInt(window.home.mapId / 1000);//大关
+        this.mapIndex = parseInt(window.home.mapId % 1000);//小关
+        console.log('window.home.mapId', window.home.mapId, this.mapRandomIndex, this.mapIndex);
         this.initBg();
         this.initMaps();
         this.resetMap();
-
-        this.timeIndex = setInterval(() => {
-            if (!this.showAlert) {
-                this.clockLabel.string = --this.time;
-                this.cost++;
-                this.current = cc.audioEngine.play(this.audio, false);
-                if (this.time == 0) {
-                    this.fail();
-                }
-            }
-        }, 1000);
     },
 
     initMaps() {
@@ -1011,152 +700,4 @@ cc.Class({
             'x@x@x@x@x@x@x@x@x@x@x@1@1@15@@@@x@x@x@x@11@@15@@@@x@x@x@x@11@2@2@4@4@13@x@x@x@x@11@3@3@30@@13@x@x@x@x@@12@14@30@@13@x@x@x@x@@12@14@5@5@5@x@x@x@x@40@40@40@@40@40@x@x@x@x@31@31@31@@31@31@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',
         ];
     },
-
-    onDestroy() {
-        clearInterval(this.timeIndex);
-        cc.audioEngine.stop(this.current);
-    },
 });
-
-var Alert = {
-    _alert: null,           // prefab
-    _titleLabel: null,   // 标题
-    _detailLabel: null,   // 内容
-    _enterButton: null,   // 确定按钮
-    _cancelButton: null,   // 取消按钮
-    _closeButton: null,   // 关闭按钮
-    _enterCallBack: null,   // 确定回调事件
-    _cancelCallBack: null,   // 取消回调事件
-    _animSpeed: 0.3,    // 动画速度
-};
-
-/**
- * detailString :   内容 string 类型.
- * enterCallBack:   确定点击事件回调  function 类型.
- * neeCancel:       是否展示取消按钮 bool 类型 default YES.
- * duration:        动画速度 default = 0.3.
-*/
-Alert.show = function (titleString, detailString, enterCallBack, cancelCallBack, needCancel, animSpeed) {
-
-    // 引用
-    var self = this;
-
-    // 判断
-    if (Alert._alert != undefined) return;
-
-    // 
-    Alert._animSpeed = animSpeed ? animSpeed : Alert._animSpeed;
-
-    // 加载 prefab 创建
-    cc.loader.loadRes("Alert", cc.Prefab, function (error, prefab) {
-
-        if (error) {
-            cc.error(error);
-            return;
-        }
-
-        // 实例 
-        var alert = cc.instantiate(prefab);
-
-        // Alert 持有
-        Alert._alert = alert;
-
-        // 动画 
-        var cbFadeOut = cc.callFunc(self.onFadeOutFinish, self);
-        var cbFadeIn = cc.callFunc(self.onFadeInFinish, self);
-        self.actionFadeIn = cc.sequence(cc.spawn(cc.fadeTo(Alert._animSpeed, 255), cc.scaleTo(Alert._animSpeed, 1.0)), cbFadeIn);
-        self.actionFadeOut = cc.sequence(cc.spawn(cc.fadeTo(Alert._animSpeed, 0), cc.scaleTo(Alert._animSpeed, 0.5)), cbFadeOut);
-
-        // 获取子节点
-        Alert._titleLabel = cc.find("alertBackground/title_bg/titleLabel", alert).getComponent(cc.Label);
-        Alert._detailLabel = cc.find("alertBackground/detailLabel", alert).getComponent(cc.Label);
-        Alert._cancelButton = cc.find("alertBackground/cancelButton", alert);
-        Alert._enterButton = cc.find("alertBackground/enterButton", alert);
-
-        // 添加点击事件
-        Alert._enterButton.on('click', self.onButtonClicked, self);
-        Alert._cancelButton.on('click', self.onButtonClicked, self);
-
-        // 父视图
-        Alert._alert.parent = cc.find("Canvas");
-
-        // 展现 alert
-        self.startFadeIn();
-
-        // 参数
-        self.configAlert(titleString, detailString, enterCallBack, cancelCallBack, needCancel, animSpeed);
-
-    });
-
-    // 参数
-    self.configAlert = function (titleString, detailString, enterCallBack, cancelCallBack, needCancel, animSpeed) {
-
-        // 确定回调
-        Alert._enterCallBack = enterCallBack;
-        // 取消回调
-        Alert._cancelCallBack = cancelCallBack;
-        // 内容
-        Alert._titleLabel.string = titleString;
-        // 内容
-        Alert._detailLabel.string = detailString;
-        // 是否需要取消按钮
-        if (needCancel || needCancel == undefined) { // 显示
-            Alert._cancelButton.active = true;
-        } else {  // 隐藏
-            Alert._cancelButton.active = false;
-            Alert._enterButton.x = 0;
-        }
-    };
-
-    // 执行弹进动画
-    self.startFadeIn = function () {
-        cc.eventManager.pauseTarget(Alert._alert, true);
-        Alert._alert.position = cc.p(0, 0);
-        Alert._alert.setScale(0.5);
-        Alert._alert.opacity = 0;
-        Alert._alert.runAction(self.actionFadeIn);
-    };
-
-    // 执行弹出动画
-    self.startFadeOut = function () {
-        cc.eventManager.pauseTarget(Alert._alert, true);
-        Alert._alert.runAction(self.actionFadeOut);
-    };
-
-    // 弹进动画完成回调
-    self.onFadeInFinish = function () {
-        cc.eventManager.resumeTarget(Alert._alert, true);
-    };
-
-    // 弹出动画完成回调
-    self.onFadeOutFinish = function () {
-        self.onDestory();
-    };
-
-    // 按钮点击事件
-    self.onButtonClicked = function (event) {
-        if (event.target.name == "enterButton") {
-            if (self._enterCallBack) {
-                self._enterCallBack();
-            }
-        } else if (event.target.name == "cancelButton") {
-            if (self._cancelCallBack) {
-                self._cancelCallBack();
-            }
-        }
-        self.startFadeOut();
-    };
-
-    // 销毁 alert (内存管理还没搞懂，暂且这样写吧~v~)
-    self.onDestory = function () {
-        Alert._alert.destroy();
-        Alert._enterCallBack = null;
-        Alert._cancelCallBack = null;
-        Alert._alert = null;
-        Alert._titleLabel = null;
-        Alert._detailLabel = null;
-        Alert._cancelButton = null;
-        Alert._enterButton = null;
-        Alert._animSpeed = 0.3;
-    };
-};

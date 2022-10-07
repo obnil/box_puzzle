@@ -13,7 +13,7 @@ cc.Class({
         audio3: {
             default: null,
             type: cc.AudioClip
-        }
+        },
     },
 
     onLoad() {
