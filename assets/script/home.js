@@ -38,12 +38,12 @@ cc.Class({
     },
 
     showRank() {
-        this.rankAreaNode.active = true;
+        this.rankAreaNode.x = 0;
         this.mainAreaNode.active = false;
     },
 
     showMain() {
-        this.rankAreaNode.active = false;
+        this.rankAreaNode.x = 640;
         this.mainAreaNode.active = true;
     },
 
@@ -284,6 +284,8 @@ cc.Class({
         this.cellAreaNode.getComponent('cellArea').disableTouch();
         this.mapId = 1057;
         if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+            this.rankAreaNode.active = true;
+            this.rankNode.active = true;
             wx.showShareMenu({
                 withShareTicket: true,
                 menus: ['shareAppMessage', 'shareTimeline']

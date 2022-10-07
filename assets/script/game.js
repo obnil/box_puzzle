@@ -163,7 +163,7 @@ cc.Class({
         this.gamingNode.active = false;
         this.successNode.active = true;
         this.costLabel.string = this.cost;
-        this.rankAreaNode.active = true;
+        this.rankAreaNode.x = 0;
         if (cc.sys.platform == cc.sys.WECHAT_GAME) {
             wx.getOpenDataContext().postMessage({
                 type: 'updateCost',
@@ -237,13 +237,11 @@ cc.Class({
 
     //继续挑战
     replay() {
-        this.btnClick();
         cc.director.loadScene('game');
     },
 
     //重新挑战
     retry() {
-        this.btnClick();
         this.firstLevel = true;
         this.destroyNode.enabled = true;
         this.destroyNode.opacity = 255;
@@ -257,7 +255,7 @@ cc.Class({
         this.changeNode.opacity = 255;
         this.changeCountLabel.string = '+';
 
-        this.rankAreaNode.active = false;
+        this.rankAreaNode.x = 640;
         this.gamingNode.active = true;
         this.failNode.active = false;
         this.resetMap();
@@ -312,6 +310,7 @@ cc.Class({
             this.showAlert = true;
             let self = this;
             Alert.show("重置道具", "重置所有方块并把他们放回原位置", function () {
+                self.btnClick();
                 self.showAlert = false;
                 self.resetTimes = 1;
                 self.resetCountLabel.string = self.resetTimes;
@@ -335,7 +334,7 @@ cc.Class({
         cc.audioEngine.stop(this.current);
         this.gamingNode.active = false;
         this.failNode.active = true;
-        this.rankAreaNode.active = true;
+        this.rankAreaNode.x = 0;
         if (cc.sys.platform == cc.sys.WECHAT_GAME) {
             wx.getOpenDataContext().postMessage({
                 type: 'switchRoute',
@@ -453,7 +452,6 @@ cc.Class({
     },
 
     back() {
-        this.btnClick();
         cc.director.loadScene('home');
     },
 
@@ -486,6 +484,9 @@ cc.Class({
         this.initBg();
         this.initMaps();
         this.resetMap();
+        if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+            this.rankAreaNode.active = true;
+        }
 
         this.timeIndex = setInterval(() => {
             if (!this.showAlert) {
