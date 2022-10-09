@@ -212,7 +212,7 @@ cc.Class({
             }
             if (this.destroyTimes == 0) {
                 //禁用消除 按钮
-                this.destroyNode.enabled = false;
+                this.destroyNode.getComponent(cc.Button).interactable = false;
                 this.destroyNode.opacity = 128;
                 this.destroyCountLabel.string = '+';
             }
@@ -243,15 +243,15 @@ cc.Class({
     //重新挑战
     retry() {
         this.firstLevel = true;
-        this.destroyNode.enabled = true;
+        this.destroyNode.getComponent(cc.Button).interactable = true;
         this.destroyNode.opacity = 255;
         this.destroyCountLabel.string = '+';
         this.resetTimes = -1;
-        this.resetNode.enabled = true;
+        this.resetNode.getComponent(cc.Button).interactable = true;
         this.resetNode.opacity = 255;
         this.resetCountLabel.string = '+';
         this.changeTimes = -1;
-        this.changeNode.enabled = true;
+        this.changeNode.getComponent(cc.Button).interactable = true;
         this.changeNode.opacity = 255;
         this.changeCountLabel.string = '+';
 
@@ -296,7 +296,7 @@ cc.Class({
             }
             if (this.changeTimes == 0) {
                 //禁用消除 按钮
-                this.changeNode.enabled = false;
+                this.changeNode.getComponent(cc.Button).interactable = false;
                 this.changeNode.opacity = 128;
                 this.changeCountLabel.string = '+';
             }
@@ -319,13 +319,16 @@ cc.Class({
                 self.showAlert = false;
             }, null, 0.1);
         } else {
-            this.resetTimes = 0;
-            this.resetMap();
-            this.resetCountLabel.string = '+';
-            //禁用重置 按钮
-            this.resetNode.enabled = false;
-            this.resetNode.opacity = 128;
-
+            if (this.resetTimes > 0) {
+                this.resetTimes--;
+                this.resetMap();
+            }
+            if (this.resetTimes == 0) {
+                //禁用重置 按钮
+                this.resetCountLabel.string = '+';
+                this.resetNode.getComponent(cc.Button).interactable  = false;
+                this.resetNode.opacity = 128;
+            }
         }
     },
 

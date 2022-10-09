@@ -40,11 +40,13 @@ cc.Class({
     showRank() {
         this.rankAreaNode.x = 0;
         this.mainAreaNode.active = false;
+        this.button.hide();
     },
 
     showMain() {
         this.rankAreaNode.x = 640;
         this.mainAreaNode.active = true;
+        this.button.show();
     },
 
     clickToPlay() {
@@ -304,11 +306,32 @@ cc.Class({
             })
             let object = wx.getLaunchOptionsSync();
             this.mapId = parseInt(object.query['mapId']);
-            if(this.mapId){
+            if (this.mapId) {
                 this.helpTipNode.active = true;
-                this.helpTipLabel.string += ' > '+this.mapId;
+                this.helpTipLabel.string += ' > ' + this.mapId;
             }
+
+            let res = wx.getSystemInfoSync();
+            let windowSize = cc.view.getVisibleSize();
+            console.log(res.screenWidth,res.screenHeight,windowSize.width,windowSize.height);
+            let left = res.screenWidth / windowSize.width * 510;
+            let top = res.screenHeight /2 - res.screenHeight / windowSize.height * 440;
+            let width = res.screenHeight / windowSize.height * 80;
+            console.log(left,top,width);
+            this.button = wx.createGameClubButton({
+                icon: 'green',
+                style: {
+                    left: left,
+                    top: top,
+                    width: width,
+                    height: width
+                }
+            })
         }
+    },
+
+    onDestroy(){
+        this.button.destroy();
     },
 
     repeatPlay() {
