@@ -40,13 +40,17 @@ cc.Class({
     showRank() {
         this.rankAreaNode.x = 0;
         this.mainAreaNode.active = false;
-        this.button.hide();
+        if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+            this.button.hide();
+        }
     },
 
     showMain() {
         this.rankAreaNode.x = 640;
         this.mainAreaNode.active = true;
-        this.button.show();
+        if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+            this.button.show();
+        }
     },
 
     clickToPlay() {
@@ -313,11 +317,11 @@ cc.Class({
 
             let res = wx.getSystemInfoSync();
             let windowSize = cc.view.getVisibleSize();
-            console.log(res.screenWidth,res.screenHeight,windowSize.width,windowSize.height);
+            console.log(res.screenWidth, res.screenHeight, windowSize.width, windowSize.height);
             let left = res.screenWidth / windowSize.width * 510;
-            let top = res.screenHeight /2 - res.screenHeight / windowSize.height * 440;
+            let top = res.screenHeight / 2 - res.screenHeight / windowSize.height * 440;
             let width = res.screenHeight / windowSize.height * 80;
-            console.log(left,top,width);
+            console.log(left, top, width);
             this.button = wx.createGameClubButton({
                 icon: 'green',
                 style: {
@@ -330,8 +334,10 @@ cc.Class({
         }
     },
 
-    onDestroy(){
-        this.button.destroy();
+    onDestroy() {
+        if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+            this.button.destroy();
+        }
     },
 
     repeatPlay() {
