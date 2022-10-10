@@ -47,20 +47,18 @@ cc.Class({
             }
         }, 500);
     },
-    testMap(round, level) {
-        // let xhr = new XMLHttpRequest();
-        // xhr.onreadystatechange = () => {
-        //     if (xhr.readyState == 4 && xhr.status >= 200 && xhr.status < 400) {
-        //         let response = xhr.responseText;
-        //         console.log('linbo:', `'${JSON.parse(response).a0}',`);
-        //     }
-        // }
+    // testMap(round, level) {
+    //     let xhr = new XMLHttpRequest();
+    //     xhr.onreadystatechange = () => {
+    //         if (xhr.readyState == 4 && xhr.status >= 200 && xhr.status < 400) {
+    //             let response = xhr.responseText;
+    //             console.log('linbo:', `'${JSON.parse(response).a0}',`);
+    //         }
+    //     }
 
-        // xhr.open('GET', `http://bbh.gaoqingpai.com/hrd/res/HD/Round${round}/${level}.json`);
-        // xhr.send();
-
-        console.log('linbo:', round, level);
-    },
+    //     xhr.open('GET', `http://bbh.gaoqingpai.com/hrd/res/HD/Round${round}/${level}.json`);
+    //     xhr.send();
+    // },
 
     getRandomMap1() {
         let maps;
@@ -312,7 +310,7 @@ cc.Class({
             this.showAlert = true;
             let self = this;
             Alert.show("重置道具", "重置所有方块并把他们放回原位置", function () {
-                self.btnClick();
+                self.share();
                 self.showAlert = false;
                 self.resetTimes = 1;
                 self.resetCountLabel.string = self.resetTimes;
