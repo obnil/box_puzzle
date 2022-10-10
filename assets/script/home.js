@@ -311,17 +311,18 @@ cc.Class({
             let object = wx.getLaunchOptionsSync();
             this.mapId = parseInt(object.query['mapId']);
             if (this.mapId) {
-                this.helpTipNode.active = true;
-                this.helpTipLabel.string += ' > ' + this.mapId;
+                this.isPractice = false;
+                this.helpTipLabel.string = '收到好友求助！去帮助TA > ' + this.mapId;
+            } else {
+                this.isPractice = true;
+                this.helpTipLabel.string = '游戏太难？去新手村练习下吧 > '
             }
 
             let res = wx.getSystemInfoSync();
             let windowSize = cc.view.getVisibleSize();
-            console.log(res.screenWidth, res.screenHeight, windowSize.width, windowSize.height);
             let left = res.screenWidth / windowSize.width * 510;
             let top = res.screenHeight / 2 - res.screenHeight / windowSize.height * 440;
             let width = res.screenHeight / windowSize.height * 80;
-            console.log(left, top, width);
             this.button = wx.createGameClubButton({
                 icon: 'green',
                 style: {

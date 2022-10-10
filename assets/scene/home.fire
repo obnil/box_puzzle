@@ -168,7 +168,7 @@
       "array": [
         0,
         0,
-        288.3864594602181,
+        198.31981746663647,
         0,
         0,
         0,
@@ -942,7 +942,7 @@
         "__id__": 21
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 23
@@ -1021,7 +1021,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 358.52,
+      "width": 165.38,
       "height": 40.32
     },
     "_anchorPoint": {
@@ -1072,8 +1072,8 @@
       }
     ],
     "_useOriginalSize": true,
-    "_string": "收到好友求助！去帮助TA",
-    "_N$string": "收到好友求助！去帮助TA",
+    "_string": "游戏提示~~",
+    "_N$string": "游戏提示~~",
     "_fontSize": 32,
     "_lineHeight": 32,
     "_enableWrapText": true,
@@ -1636,8 +1636,8 @@
       }
     ],
     "_useOriginalSize": true,
-    "_string": "开 始 游 戏",
-    "_N$string": "开 始 游 戏",
+    "_string": "开 始 挑 战",
+    "_N$string": "开 始 挑 战",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -1797,7 +1797,7 @@
         "__id__": 45
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 47
@@ -1815,7 +1815,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 258,
-      "height": 80
+      "height": 60
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
