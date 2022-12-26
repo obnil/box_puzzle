@@ -12,6 +12,7 @@ cc.Class({
         helpTipNode: cc.Node,
         helpTipLabel: cc.Label,
         playNode: cc.Node,
+        exitTipNode: cc.Node,
         rankNode: cc.Node,
 
         rankAreaNode: cc.Node,
@@ -287,16 +288,12 @@ cc.Class({
                 withShareTicket: true,
                 menus: ['shareAppMessage', 'shareTimeline']
             })
+
             wx.onShareAppMessage(() => {
                 return {
                     title: '据说只有0.8%的人可以通关！玻璃心勿进！',
-                    imageUrl: 'https://636c-cloud1-0gx5292p6d4e5ef3-1309513586.tcb.qcloud.la/share.png?sign=aeed8af1c1fcc58e9560ac588b45a753&t=1664193194',
-                    success: function (t) {
-                        console.log('分享成功');
-                    },
-                    fail: function (t) {
-                        console.log('分享失败');
-                    }
+                    imageUrlId: 'kMYjSJVfQ+eYB6dsE2steQ==',
+                    imageUrl: 'https://mmocgame.qpic.cn/wechatgame/tWuvEXpHOkaCoWTHgBG3wMTNp5KgQ1KI9sFM17t52KFZvM6jGicyTvAVf39Ze0DTr/0'
                 }
             })
             let object = wx.getLaunchOptionsSync();
@@ -309,12 +306,20 @@ cc.Class({
                 this.helpTipLabel.string = '游戏太难？去新手村练习下吧 > '
             }
         }
+        let seq = cc.repeatForever(
+            cc.sequence(
+                cc.moveTo(1, cc.v2(-50, -300)),
+                cc.moveTo(0.5, cc.v2(-30, -300)),
+            )
+        );
+        this.exitTipNode.runAction(seq);
     },
 
     repeatPlay() {
         let blink = new cc.Blink(100, 100)
         this.playNode.runAction(blink);
     },
+
     maps1() {
         return [
             'x@x@x@x@x@x@x@x@x@x@x@@1@1@30@@@x@x@x@x@@@@30@@@x@x@x@x@@@2@2@2@@x@x@x@x@@11@3@3@@@x@x@x@x@@11@4@4@4@@x@x@x@x@@@@@@@x@x@x@x@40@40@40@@40@40@x@x@x@x@31@31@31@@31@31@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@x@@',

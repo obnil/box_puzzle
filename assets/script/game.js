@@ -20,7 +20,8 @@ cc.Class({
         changeCountLabel: cc.Label,
         destroyNode: cc.Node,
         destroyCountLabel: cc.Label,
-        btnAudio: cc.AudioClip
+        btnAudio: cc.AudioClip,
+        exitTipNode: cc.Node,
     },
 
     btnClick() {
@@ -34,11 +35,8 @@ cc.Class({
                 let res = wx.getSystemInfoSync();
                 let windowSize = cc.view.getVisibleSize();
                 let left = res.screenWidth / windowSize.width * 510;
-                console.log('res.screenWidth: ', res.screenWidth , 'res.screenHeight: ',res.screenHeight, 'windowSize: ', windowSize);
                 let top = windowSize.height / 2 - 180;
                 let width = windowSize.width;
-
-                console.log('top: ', top , 'width: ', width);
                 wx.shareAppMessage({
                     title: '和我一起来挑战' + this.mapIndex + '关~',
                     imageUrl: canvas.toTempFilePathSync({
@@ -451,6 +449,13 @@ cc.Class({
                 }
             }
         }, 1000);
+        let seq = cc.repeatForever(
+            cc.sequence(
+                cc.moveTo(1, cc.v2(-50, -300)),
+                cc.moveTo(0.5, cc.v2(-30, -300)),
+            )
+        );
+        this.exitTipNode.runAction(seq);
     },
 
     onDestroy() {

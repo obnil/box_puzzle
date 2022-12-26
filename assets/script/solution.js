@@ -9,15 +9,13 @@ cc.Class({
         cell_h3_Prefeb: cc.Prefab,
         cellAreaNode: cc.Node,
         mapIdLabel: cc.Label,
+        exitTipNode: cc.Node,
 
         gamingNode: cc.Node,
         resetNode: cc.Node,
         frontNode: cc.Node,
         nextNode: cc.Node,
-        btnAudio: {
-            default: null,
-            url: cc.AudioClip
-        }
+        btnAudio: cc.AudioClip
     },
 
     btnClick() {
@@ -239,5 +237,12 @@ cc.Class({
         this.mapIndex = parseInt(this.mapId % 1000);//小关
         this.initBg();
         this.resetMap();
+        let seq = cc.repeatForever(
+            cc.sequence(
+                cc.moveTo(1, cc.v2(-50, -300)),
+                cc.moveTo(0.5, cc.v2(-30, -300)),
+            )
+        );
+        this.exitTipNode.runAction(seq);
     },
 });

@@ -168,7 +168,7 @@
       "array": [
         0,
         0,
-        295.08394811026665,
+        288.3864594602181,
         0,
         0,
         0,
@@ -189,7 +189,7 @@
     "_is3DNode": false,
     "_groupIndex": 0,
     "groupIndex": 0,
-    "_id": "2avTSwZUJDMaoK7GdwBMga"
+    "_id": "ccORYHjVFOh5zz9KOJQZO9"
   },
   {
     "__type__": "cc.Camera",
@@ -225,7 +225,7 @@
     },
     "_renderStages": 1,
     "_alignWithScreen": true,
-    "_id": "e7lBIBYgNCh4PWST8xNb7B"
+    "_id": "149fLFWb9KD6NN0vmV/3Dn"
   },
   {
     "__type__": "cc.Node",
@@ -1693,8 +1693,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 40,
-      "height": 35
+      "width": 35,
+      "height": 30
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1705,7 +1705,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -30,
+        -50,
         -300,
         0,
         0,
@@ -1867,6 +1867,9 @@
     },
     "mapIdLabel": {
       "__id__": 15
+    },
+    "exitTipNode": {
+      "__id__": 38
     },
     "gamingNode": {
       "__id__": 6

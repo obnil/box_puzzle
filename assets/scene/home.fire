@@ -189,7 +189,7 @@
     "_is3DNode": false,
     "_groupIndex": 0,
     "groupIndex": 0,
-    "_id": "4emFrc/LtFw7IthbRQ/NPk"
+    "_id": "6dWMEJGRlG4LiI16wKrddp"
   },
   {
     "__type__": "cc.Camera",
@@ -225,7 +225,7 @@
     },
     "_renderStages": 1,
     "_alignWithScreen": true,
-    "_id": "1eQrXmJ8JOHLiPzCp7jb/o"
+    "_id": "98ft4DG6hEZJtf5SqQmboy"
   },
   {
     "__type__": "cc.Node",
@@ -2260,8 +2260,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 40,
-      "height": 35
+      "width": 35,
+      "height": 30
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2272,7 +2272,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -30,
+        -50,
         -300,
         0,
         0,
@@ -2443,6 +2443,9 @@
     },
     "playNode": {
       "__id__": 34
+    },
+    "exitTipNode": {
+      "__id__": 50
     },
     "rankNode": {
       "__id__": 40

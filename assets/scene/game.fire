@@ -168,7 +168,7 @@
       "array": [
         0,
         0,
-        295.08394811026665,
+        288.3864594602181,
         0,
         0,
         0,
@@ -189,7 +189,7 @@
     "_is3DNode": false,
     "_groupIndex": 0,
     "groupIndex": 0,
-    "_id": "73PhKt0IVFyYi5vazfq75h"
+    "_id": "2aEk9VVVFERoSQ2wOcomHO"
   },
   {
     "__type__": "cc.Camera",
@@ -225,7 +225,7 @@
     },
     "_renderStages": 1,
     "_alignWithScreen": true,
-    "_id": "d92ghWWWRMv6w62nnSZGSR"
+    "_id": "26c4avGSlKfIjRO7XveJkF"
   },
   {
     "__type__": "cc.Node",
@@ -536,8 +536,8 @@
       }
     ],
     "_useOriginalSize": true,
-    "_string": "难度飙升",
-    "_N$string": "难度飙升",
+    "_string": "快乐加倍",
+    "_N$string": "快乐加倍",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -2858,8 +2858,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 40,
-      "height": 35
+      "width": 35,
+      "height": 30
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2870,7 +2870,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -30,
+        -50,
         -300,
         0,
         0,
@@ -3092,6 +3092,9 @@
     },
     "btnAudio": {
       "__uuid__": "4aa8544b-eff9-47a0-956f-995bba252880"
+    },
+    "exitTipNode": {
+      "__id__": 60
     },
     "_id": "9fHZQDSPlGzIy6DbxALfsm"
   },
